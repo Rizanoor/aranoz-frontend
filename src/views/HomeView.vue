@@ -10,7 +10,11 @@ import Product from '../components/organisems/Product.vue';
 
 <template>
   <main>
-    <Hero />
+    <Hero
+      title="Modern Interior"
+      subtitle="Design Studio"
+      description="Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique."
+    />
     <Product />
     <Choose />
     <Help />
