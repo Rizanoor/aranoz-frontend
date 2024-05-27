@@ -22,17 +22,12 @@ import { RouterLink, useRoute } from 'vue-router';
                             <span :class="{ active: isActive }">Shop</span>
                         </RouterLink>
                     </li>
-                    <!-- <li class="nav-item">
-                        <RouterLink to="/about" class="nav-link" v-slot="{ isActive }">
-                            <span :class="{ active: isActive }">About us</span>
-                        </RouterLink>
-                    </li>
                     <li class="nav-item">
                         <RouterLink to="/services" class="nav-link" v-slot="{ isActive }">
                             <span :class="{ active: isActive }">Services</span>
                         </RouterLink>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <RouterLink to="/blog" class="nav-link" v-slot="{ isActive }">
                             <span :class="{ active: isActive }">Blog</span>
                         </RouterLink>
