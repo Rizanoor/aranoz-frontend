@@ -1,8 +1,36 @@
 <script setup>
 import { RouterLink } from 'vue-router';
+import { ref } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
 import Hero from '../components/organisems/Hero.vue';
 import InfoContact from '../components/organisems/InfoContact.vue';
 
+const name = ref('');
+const email = ref('');
+const password = ref('');
+const errorMessage = ref('');
+const router = useRouter();
+
+const handleRegister = async (event) => {
+    event.preventDefault();
+    try {
+        const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/register`, {
+            name: name.value,
+            email: email.value,
+            password: password.value
+        });
+
+        const { access_token, user } = response.data.data;
+        localStorage.setItem('authToken', access_token);
+        localStorage.setItem('userName', user.name);
+        localStorage.setItem('userEmail', user.email);
+
+        router.push('/');
+    } catch (error) {
+        errorMessage.value = error.response.data.message || 'Registration failed. Please try again.';
+    }
+};
 </script>
 
 <template>
@@ -16,23 +44,24 @@ import InfoContact from '../components/organisems/InfoContact.vue';
                         <div class="col-md-8 col-lg-8 pb-4">
                             <InfoContact />
 
-                            <form>
+                            <form @submit="handleRegister">
                                 <div class="form-group">
                                     <label class="text-black" for="name">Name</label>
-                                    <input type="name" class="form-control" id="name">
+                                    <input type="text" class="form-control" id="name" v-model="name">
                                 </div>
                                 <div class="form-group">
                                     <label class="text-black" for="email">Email address</label>
-                                    <input type="email" class="form-control" id="email">
+                                    <input type="email" class="form-control" id="email" v-model="email">
                                 </div>
                                 <div class="form-group">
                                     <label class="text-black" for="password">Password</label>
-                                    <input type="password" class="form-control" id="password">
+                                    <input type="password" class="form-control" id="password" v-model="password">
                                 </div>
                                 <br>
                                 <button type="submit" class="btn btn-primary-hover-outline me-2">Register</button>
                                 <RouterLink to="/login" class="btn btn-primary-hover-outline">Login</RouterLink>
                             </form>
+                            <div v-if="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
                         </div>
                     </div>
                 </div>
