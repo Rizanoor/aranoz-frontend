@@ -12,7 +12,7 @@ import Hero from '../components/organisems/Hero.vue';
         <div class="untree_co-section product-section before-footer-section">
             <div class="container">
                 <div class="row">
-                    <CardProduct v-for="n in 8" :key="n" />
+                    <CardProduct />
                 </div>
             </div>
         </div>
