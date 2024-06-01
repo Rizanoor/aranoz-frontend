@@ -5,11 +5,13 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 import InfoContact from '../components/organisems/InfoContact.vue';
 import Hero from '../components/organisems/Hero.vue';
+import { useAuthStore } from '../stores/auth.js';
 
 const email = ref('');
 const password = ref('');
 const errorMessage = ref('');
 const router = useRouter();
+const authStore = useAuthStore();
 
 const handleSubmit = async (event) => {
     event.preventDefault();
@@ -24,6 +26,7 @@ const handleSubmit = async (event) => {
         localStorage.setItem('userName', user.name);
         localStorage.setItem('userEmail', user.email);
         
+        authStore.login(user);
         router.push('/');
     } catch (error) {
         errorMessage.value = error.response.data.message || 'Login failed. Please try again.';
@@ -48,7 +51,7 @@ const handleSubmit = async (event) => {
                                     <input type="email" class="form-control" id="email" v-model="email">
                                 </div>
                                 <div class="form-group">
-                                    <label class="text-black" for="email">Password</label>
+                                    <label class="text-black" for="password">Password</label>
                                     <input type="password" class="form-control" id="password" v-model="password">
                                 </div>
                                 <br>

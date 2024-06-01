@@ -1,35 +1,33 @@
 <script setup>
 import { RouterLink } from 'vue-router';
-import { ref } from 'vue';
+import { useAuthStore } from '../stores/auth.js';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 import Hero from '../components/organisems/Hero.vue';
 import InfoContact from '../components/organisems/InfoContact.vue';
 
-const name = ref('');
-const email = ref('');
-const password = ref('');
-const errorMessage = ref('');
 const router = useRouter();
+const authStore = useAuthStore();
 
 const handleRegister = async (event) => {
-    event.preventDefault();
-    try {
-        const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/register`, {
-            name: name.value,
-            email: email.value,
-            password: password.value
-        });
+  event.preventDefault();
+  try {
+    const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/register`, {
+      name: name.value,
+      email: email.value,
+      password: password.value
+    });
 
-        const { access_token, user } = response.data.data;
-        localStorage.setItem('authToken', access_token);
-        localStorage.setItem('userName', user.name);
-        localStorage.setItem('userEmail', user.email);
+    const { access_token, user } = response.data.data;
+    localStorage.setItem('authToken', access_token);
+    localStorage.setItem('userName', user.name);
+    localStorage.setItem('userEmail', user.email);
 
-        router.push('/');
-    } catch (error) {
-        errorMessage.value = error.response.data.message || 'Registration failed. Please try again.';
-    }
+    authStore.login(user);
+    router.push('/');
+  } catch (error) {
+    errorMessage.value = error.response.data.message || 'Registration failed. Please try again.';
+  }
 };
 </script>
 
