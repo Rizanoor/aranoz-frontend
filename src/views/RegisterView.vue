@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink } from 'vue-router';
+import { ref } from 'vue';
 import { useAuthStore } from '../stores/auth.js';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
@@ -10,6 +11,11 @@ import { useToast } from 'vue-toast-notification';
 const router = useRouter();
 const authStore = useAuthStore();
 const toast = useToast();
+
+const name = ref('');
+const email = ref('');
+const password = ref('');
+const errorMessage = ref('');
 
 const handleRegister = async (event) => {
     event.preventDefault();
@@ -26,7 +32,7 @@ const handleRegister = async (event) => {
         localStorage.setItem('userName', user.name);
         localStorage.setItem('userEmail', user.email);
 
-        authStore.login(user);
+        authStore.register(user);
         router.push('/');
         toast.success('Register successful', {
             position: 'top-right'

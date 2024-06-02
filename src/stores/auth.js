@@ -10,6 +10,10 @@ export const useAuthStore = defineStore('auth', {
       this.isAuthenticated = true;
       this.user = user;
     },
+    register(user) {
+      this.isAuthenticated = true;
+      this.user = user;
+    },
     logout() {
       this.isAuthenticated = false;
       this.user = {};
