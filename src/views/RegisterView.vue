@@ -18,8 +18,9 @@ const handleRegister = async (event) => {
       password: password.value
     });
 
-    const { access_token, user } = response.data.data;
+    const { access_token, token_type, user } = response.data.data;
     localStorage.setItem('authToken', access_token);
+    localStorage.setItem('token_type', token_type);
     localStorage.setItem('userName', user.name);
     localStorage.setItem('userEmail', user.email);
 
