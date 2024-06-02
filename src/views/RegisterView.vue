@@ -5,30 +5,38 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 import Hero from '../components/organisems/Hero.vue';
 import InfoContact from '../components/organisems/InfoContact.vue';
+import { useToast } from 'vue-toast-notification';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const toast = useToast();
 
 const handleRegister = async (event) => {
-  event.preventDefault();
-  try {
-    const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/register`, {
-      name: name.value,
-      email: email.value,
-      password: password.value
-    });
+    event.preventDefault();
+    try {
+        const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/register`, {
+            name: name.value,
+            email: email.value,
+            password: password.value
+        });
 
-    const { access_token, token_type, user } = response.data.data;
-    localStorage.setItem('authToken', access_token);
-    localStorage.setItem('token_type', token_type);
-    localStorage.setItem('userName', user.name);
-    localStorage.setItem('userEmail', user.email);
+        const { access_token, token_type, user } = response.data.data;
+        localStorage.setItem('authToken', access_token);
+        localStorage.setItem('token_type', token_type);
+        localStorage.setItem('userName', user.name);
+        localStorage.setItem('userEmail', user.email);
 
-    authStore.login(user);
-    router.push('/');
-  } catch (error) {
-    errorMessage.value = error.response.data.message || 'Registration failed. Please try again.';
-  }
+        authStore.login(user);
+        router.push('/');
+        toast.success('Register successful', {
+            position: 'top-right'
+        });
+    } catch (error) {
+        errorMessage.value = error.response.data.message || 'Registration failed. Please try again.';
+        toast.error(errorMessage.value,{
+            position: 'top-right'
+        });
+    }
 };
 </script>
 

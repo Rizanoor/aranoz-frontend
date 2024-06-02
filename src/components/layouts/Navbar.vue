@@ -1,10 +1,13 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { useRouter, RouterLink } from 'vue-router';
 import { useAuthStore } from '../../stores/auth.js';
+import { useToast } from 'vue-toast-notification';
+
 
 const router = useRouter();
 const authStore = useAuthStore();
+const toast = useToast();
 
 onMounted(() => {
   authStore.checkAuth();
@@ -13,6 +16,9 @@ onMounted(() => {
 const handleLogout = () => {
   authStore.logout();
   router.push('/login');
+  toast.success('Logout successful', {
+    position: 'top-right'
+  });
 };
 </script>
 
@@ -21,7 +27,7 @@ const handleLogout = () => {
     <div class="container">
       <RouterLink class="navbar-brand" to="/">Furni<span>.</span></RouterLink>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
-              aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+        aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarsFurni">
@@ -49,7 +55,8 @@ const handleLogout = () => {
             </RouterLink>
           </li>
           <li v-else class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
               Hello, {{ authStore.user.name }}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">

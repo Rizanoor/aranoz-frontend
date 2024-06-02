@@ -6,12 +6,15 @@ import { useRouter } from 'vue-router';
 import InfoContact from '../components/organisems/InfoContact.vue';
 import Hero from '../components/organisems/Hero.vue';
 import { useAuthStore } from '../stores/auth.js';
+import { useToast } from 'vue-toast-notification';
+
 
 const email = ref('');
 const password = ref('');
 const errorMessage = ref('');
 const router = useRouter();
 const authStore = useAuthStore();
+const toast = useToast();
 
 const handleSubmit = async (event) => {
     event.preventDefault();
@@ -30,8 +33,14 @@ const handleSubmit = async (event) => {
         
         authStore.login(user);
         router.push('/');
+        toast.success('Login successful',{
+            position: 'top-right'
+        });
     } catch (error) {
         errorMessage.value = error.response.data.message || 'Login failed. Please try again.';
+        toast.error(errorMessage.value,{
+            position: 'top-right'
+        });
     }
 };
 </script>
