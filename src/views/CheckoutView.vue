@@ -2,14 +2,14 @@
 import { ref } from 'vue';
 import Hero from '../components/organisems/Hero.vue';
 import axios from 'axios';
+import { useToast } from 'vue-toast-notification';
 
-
+const toast = useToast();
 let products = ref(JSON.parse(localStorage.getItem('products')) || []);
 
 const formatCurrency = (value) => {
     return value.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
 };
-
 
 const checkout = () => {
     const payload = {
@@ -30,6 +30,9 @@ const checkout = () => {
     })
     .catch(error => {
         console.error('Error:', error.response.data);
+        toast.error('Checkout failed. Please try again.', {
+            position: 'top-right'
+        });
     });
 
 };

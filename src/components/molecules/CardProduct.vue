@@ -1,7 +1,9 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { useToast } from 'vue-toast-notification';
 
+const toast = useToast();
 const products = ref([]);
 
 onMounted(async () => {
@@ -14,9 +16,9 @@ onMounted(async () => {
 });
 
 const getImageUrl = (product) => {
-  return product.galleries.length > 0
-    ? `${import.meta.env.VITE_STORAGE_BASE_URL}/${product.galleries[0].photos}`
-    : '../../assets/images/default-product.png';
+    return product.galleries.length > 0
+        ? `${import.meta.env.VITE_STORAGE_BASE_URL}/${product.galleries[0].photos}`
+        : '../../assets/images/default-product.png';
 };
 
 const formatCurrency = (value) => {
@@ -24,14 +26,18 @@ const formatCurrency = (value) => {
 };
 
 const addToLocalStorage = (product) => {
-  const storedProducts = localStorage.getItem('products');
-  if (storedProducts) {
-    const productsArray = JSON.parse(storedProducts);
-    productsArray.push(product);
-    localStorage.setItem('products', JSON.stringify(productsArray));
-  } else {
-    localStorage.setItem('products', JSON.stringify([product]));
-  }
+    const storedProducts = localStorage.getItem('products');
+    if (storedProducts) {
+        const productsArray = JSON.parse(storedProducts);
+        productsArray.push(product);
+        localStorage.setItem('products', JSON.stringify(productsArray));
+    } else {
+        localStorage.setItem('products', JSON.stringify([product]));
+    }
+
+    toast.success('Product added to cart', {
+        position: 'top-right'
+    });
 };
 
 </script>

@@ -1,7 +1,9 @@
 <script setup>
 import Hero from '../components/organisems/Hero.vue';
+import { useToast } from 'vue-toast-notification';
+
+const toast = useToast();
 let products = JSON.parse(localStorage.getItem('products')) || [];
-console.log(products);
 
 const getImageUrl = (product) => {
     return import.meta.env.VITE_STORAGE_BASE_URL + '/' + product.galleries[0].photos;
@@ -14,7 +16,14 @@ const formatCurrency = (value) => {
 const removeProduct = (index) => {
     products.splice(index, 1);
     localStorage.setItem('products', JSON.stringify(products));
-    location.reload();
+    
+    toast.success('Product removed from cart', {
+        position: 'top-right'
+    });
+
+    setTimeout(() => {
+        location.reload();
+    }, 300);
 };
 </script>
 
