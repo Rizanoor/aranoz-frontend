@@ -23,6 +23,17 @@ const formatCurrency = (value) => {
     return value.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
 };
 
+const addToLocalStorage = (product) => {
+  const storedProducts = localStorage.getItem('products');
+  if (storedProducts) {
+    const productsArray = JSON.parse(storedProducts);
+    productsArray.push(product);
+    localStorage.setItem('products', JSON.stringify(productsArray));
+  } else {
+    localStorage.setItem('products', JSON.stringify([product]));
+  }
+};
+
 </script>
 
 <template>
@@ -31,7 +42,7 @@ const formatCurrency = (value) => {
             <img :src="getImageUrl(product)" class="img-fluid product-thumbnail" alt="Product Image">
             <h3 class="product-title">{{ product.name }}</h3>
             <strong class="product-price">{{ formatCurrency(product.price) }}</strong>
-            <span class="icon-cross">
+            <span class="icon-cross" @click="addToLocalStorage(product)">
                 <img src="../../assets/images/cross.svg" class="img-fluid" alt="Cross Icon">
             </span>
         </a>

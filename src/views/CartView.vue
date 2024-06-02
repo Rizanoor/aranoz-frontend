@@ -1,6 +1,21 @@
 <script setup>
 import Hero from '../components/organisems/Hero.vue';
+let products = JSON.parse(localStorage.getItem('products')) || [];
+console.log(products);
 
+const getImageUrl = (product) => {
+    return import.meta.env.VITE_STORAGE_BASE_URL + '/' + product.galleries[0].photos;
+};
+
+const formatCurrency = (value) => {
+    return value.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+};
+
+const removeProduct = (index) => {
+    products.splice(index, 1);
+    localStorage.setItem('products', JSON.stringify(products));
+    location.reload();
+};
 </script>
 
 <template>
@@ -24,16 +39,18 @@ import Hero from '../components/organisems/Hero.vue';
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr v-for="(product, index) in products" :key="index">
                                         <td class="product-thumbnail">
-                                            <img src="../assets/images/product-1.png" alt="Image" class="img-fluid">
+                                            <img :src="getImageUrl(product)" alt="Image" class="img-fluid">
                                         </td>
                                         <td class="product-name">
-                                            <h2 class="h5 text-black">Product 1</h2>
+                                            <h2 class="h5 text-black">{{ product.name }}</h2>
                                         </td>
-                                        <td>$49.00</td>
-                                       
-                                        <td><a href="#" class="btn btn-black btn-sm">X</a></td>
+                                        <td>{{ formatCurrency(product.price) }}</td>
+                                        <td>
+                                            <a href="#" @click.prevent="removeProduct(index)" class="btn btn-black btn-sm">X</a>
+                                        </td>
+
                                     </tr>
 
                                 </tbody>
@@ -43,7 +60,7 @@ import Hero from '../components/organisems/Hero.vue';
                 </div>
 
                 <div class="row">
-                    
+
                     <div class="col-md-12 pl-5">
                         <div class="row justify-content-end">
                             <div class="col-md-7">
@@ -54,18 +71,11 @@ import Hero from '../components/organisems/Hero.vue';
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <span class="text-black">Subtotal</span>
-                                    </div>
-                                    <div class="col-md-6 text-right">
-                                        <strong class="text-black">$230.00</strong>
-                                    </div>
-                                </div>
-                                <div class="row mb-5">
-                                    <div class="col-md-6">
                                         <span class="text-black">Total</span>
                                     </div>
                                     <div class="col-md-6 text-right">
-                                        <strong class="text-black">$230.00</strong>
+                                        <strong class="text-black">{{ formatCurrency(products.reduce((total, product) =>
+                                            total + product.price, 0)) }}</strong>
                                     </div>
                                 </div>
 
