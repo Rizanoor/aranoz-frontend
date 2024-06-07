@@ -60,6 +60,7 @@ const handleLogout = () => {
               Hello, {{ authStore.user.name }}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><RouterLink class="dropdown-item" to="/transaction-history">Transaction</RouterLink></li>
               <li><a class="dropdown-item" @click="handleLogout" href="#">Logout</a></li>
             </ul>
           </li>

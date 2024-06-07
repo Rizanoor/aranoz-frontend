@@ -7,6 +7,7 @@ import CheckoutView from '../views/CheckoutView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import SuccessView from '../views/SuccessView.vue'
+import TransactionHistory from '../views/TransactionHistory.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,6 +51,11 @@ const router = createRouter({
       path: '/success',
       name: 'success',
       component: SuccessView
+    },
+    {
+      path: '/transaction-history',
+      name: 'transaction',
+      component: TransactionHistory
     },
   ]
 })
